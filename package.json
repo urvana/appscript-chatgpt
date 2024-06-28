@@ -5,13 +5,15 @@
   "description": "=CHATGPT() formula for Google Spreadsheets.",
   "main": "dist/Code.js",
   "scripts": {
-    "build": "tsc"
+    "build": "tsc",
+    "lint": "biome check --diagnostic-level=error --write --unsafe ."
   },
   "license": "MIT",
   "devDependencies": {
     "@biomejs/biome": "1.8.3",
     "@google/clasp": "^2.4.2",
     "@types/google-apps-script": "^1.0.83",
+    "openai": "^4.52.1",
     "typescript": "^5.5.2"
   }
 }

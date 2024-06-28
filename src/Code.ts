@@ -1,3 +1,28 @@
+/**********************************************
+ * @author Patricio López Juri
+ * @license MIT
+ * @version 1.0.0
+ * @see https://github.com/urvana/appscript-chatgpt
+ */
+
+import type {
+  ChatCompletion,
+  ChatCompletionCreateParamsNonStreaming,
+} from "openai/resources/chat/completions";
+
+/** You can change this. */
+const SYSTEM_PROMPT = `
+  You are a helpful assistant integrated within a Google Sheets application.
+  Your task is to provide accurate, concise, and user-friendly responses to user prompts.
+  Whenever possible, format your answers to be compatible with Google Sheets, such as providing data in a tabular format, lists, or single cell values.
+`;
+
+/** Value for empty results */
+const EMPTY = "EMPTY" as const;
+
+const PROPERTY_KEY_OPENAPI = "OPENAI_API_KEY" as const;
+const MIME_JSON = "application/json" as const;
+
 /**
  * Custom function to call ChatGPT API
  *
@@ -9,38 +34,53 @@
  */
 function CHATGPT(
   prompt: string,
-  model: string = "gpt-3.5-turbo",
-  maxTokens: number = 150,
+  model = "gpt-3.5-turbo",
+  maxTokens = 150,
 ): string {
-  const apiKey =
-    PropertiesService.getUserProperties().getProperty("OPENAI_API_KEY");
+  const properties = PropertiesService.getUserProperties();
+  const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI);
   if (!apiKey) {
     throw new Error(
-      'API key not set. Please set the API key using the "API Key" menu.',
+      'Use =CHATGPTKEY("YOUR_API_KEY") first. Get it from https://platform.openai.com/api-keys',
     );
   }
+
+  const processed = String(prompt || "").trim();
+  if (!processed) {
+    return EMPTY;
+  }
+
   const url = "https://api.openai.com/v1/chat/completions";
 
-  const payload = {
+  const payload: ChatCompletionCreateParamsNonStreaming = {
     model: model,
-    messages: [{ role: "user", content: prompt }],
     max_tokens: maxTokens,
+    messages: [
+      { role: "system", content: SYSTEM_PROMPT.trim() },
+      { role: "user", content: processed },
+    ],
   };
 
   const options: GoogleAppsScript.URL_Fetch.URLFetchRequestOptions = {
     method: "post",
-    contentType: "application/json",
+    contentType: MIME_JSON,
     headers: {
-      Authorization: "Bearer " + apiKey,
+      Accept: MIME_JSON,
+      Authorization: `Bearer ${apiKey}`,
     },
     payload: JSON.stringify(payload),
   };
 
   const response = UrlFetchApp.fetch(url, options);
   const json = response.getContentText();
-  const data = JSON.parse(json);
+  const data = JSON.parse(json) as ChatCompletion;
 
-  return data.choices[0].message.content.trim();
+  const choice = data.choices[0];
+  if (choice) {
+    const content = choice.message.content;
+    return (content || "").trim() || EMPTY;
+  }
+  return EMPTY;
 }
 
 /**
@@ -51,7 +91,7 @@ function CHATGPT(
  * @return {string} The response from ChatGPT
  * @customfunction
  */
-function CHATGPT3(prompt: string, maxTokens: number = 150): string {
+function CHATGPT3(prompt: string, maxTokens = 150): string {
   return CHATGPT(prompt, "gpt-3.5-turbo", maxTokens);
 }
 
@@ -63,7 +103,7 @@ function CHATGPT3(prompt: string, maxTokens: number = 150): string {
  * @return {string} The response from ChatGPT
  * @customfunction
  */
-function CHATGPT4(prompt: string, maxTokens: number = 150): string {
+function CHATGPT4(prompt: string, maxTokens = 150): string {
   return CHATGPT(prompt, "gpt-4", maxTokens);
 }
 
@@ -75,6 +115,7 @@ function CHATGPT4(prompt: string, maxTokens: number = 150): string {
  * @customfunction
  */
 function CHATGPTKEY(apiKey: string): string {
-  PropertiesService.getUserProperties().setProperty("OPENAI_API_KEY", apiKey);
+  const properties = PropertiesService.getUserProperties();
+  properties.setProperty("OPENAI_API_KEY", apiKey);
   return "✅ Remove this cell";
 }

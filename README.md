@@ -40,7 +40,22 @@ To compose a complex prompts concatenating multiple cells, you can use the `&` o
 Copy and paste the following code into the script editor:
 
 ```javascript
-"use strict";
+/**********************************************
+ * @author Patricio López Juri
+ * @license MIT
+ * @version 1.0.0
+ * @see https://github.com/urvana/appscript-chatgpt
+ */
+/** You can change this. */
+const SYSTEM_PROMPT = `
+  You are a helpful assistant integrated within a Google Sheets application.
+  Your task is to provide accurate, concise, and user-friendly responses to user prompts.
+  Whenever possible, format your answers to be compatible with Google Sheets, such as providing data in a tabular format, lists, or single cell values.
+`;
+/** Value for empty results */
+const EMPTY = "EMPTY";
+const PROPERTY_KEY_OPENAPI = "OPENAI_API_KEY";
+const MIME_JSON = "application/json";
 /**
  * Custom function to call ChatGPT API
  *
@@ -51,31 +66,42 @@ Copy and paste the following code into the script editor:
  * @customfunction
  */
 function CHATGPT(prompt, model = "gpt-3.5-turbo", maxTokens = 150) {
-  const apiKey =
-    PropertiesService.getUserProperties().getProperty("OPENAI_API_KEY");
-  if (!apiKey) {
-    throw new Error(
-      'API key not set. Please set the API key using the "API Key" menu.',
-    );
-  }
-  const url = "https://api.openai.com/v1/chat/completions";
-  const payload = {
-    model: model,
-    messages: [{ role: "user", content: prompt }],
-    max_tokens: maxTokens,
-  };
-  const options = {
-    method: "post",
-    contentType: "application/json",
-    headers: {
-      Authorization: "Bearer " + apiKey,
-    },
-    payload: JSON.stringify(payload),
-  };
-  const response = UrlFetchApp.fetch(url, options);
-  const json = response.getContentText();
-  const data = JSON.parse(json);
-  return data.choices[0].message.content.trim();
+    const properties = PropertiesService.getUserProperties();
+    const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI);
+    if (!apiKey) {
+        throw new Error('Use =CHATGPTKEY("YOUR_API_KEY") first. Get it from https://platform.openai.com/api-keys');
+    }
+    const processed = String(prompt || "").trim();
+    if (!processed) {
+        return EMPTY;
+    }
+    const url = "https://api.openai.com/v1/chat/completions";
+    const payload = {
+        model: model,
+        max_tokens: maxTokens,
+        messages: [
+            { role: "system", content: SYSTEM_PROMPT.trim() },
+            { role: "user", content: processed },
+        ],
+    };
+    const options = {
+        method: "post",
+        contentType: MIME_JSON,
+        headers: {
+            Accept: MIME_JSON,
+            Authorization: `Bearer ${apiKey}`,
+        },
+        payload: JSON.stringify(payload),
+    };
+    const response = UrlFetchApp.fetch(url, options);
+    const json = response.getContentText();
+    const data = JSON.parse(json);
+    const choice = data.choices[0];
+    if (choice) {
+        const content = choice.message.content;
+        return (content || "").trim() || EMPTY;
+    }
+    return EMPTY;
 }
 /**
  * Custom function to call ChatGPT-3 API
@@ -86,7 +112,7 @@ function CHATGPT(prompt, model = "gpt-3.5-turbo", maxTokens = 150) {
  * @customfunction
  */
 function CHATGPT3(prompt, maxTokens = 150) {
-  return CHATGPT(prompt, "gpt-3.5-turbo", maxTokens);
+    return CHATGPT(prompt, "gpt-3.5-turbo", maxTokens);
 }
 /**
  * Custom function to call ChatGPT-4 API
@@ -97,7 +123,7 @@ function CHATGPT3(prompt, maxTokens = 150) {
  * @customfunction
  */
 function CHATGPT4(prompt, maxTokens = 150) {
-  return CHATGPT(prompt, "gpt-4", maxTokens);
+    return CHATGPT(prompt, "gpt-4", maxTokens);
 }
 /**
  * Custom function to set the OpenAI API key
@@ -107,7 +133,9 @@ function CHATGPT4(prompt, maxTokens = 150) {
  * @customfunction
  */
 function CHATGPTKEY(apiKey) {
-  PropertiesService.getUserProperties().setProperty("OPENAI_API_KEY", apiKey);
-  return "✅ Remove this cell";
+    const properties = PropertiesService.getUserProperties();
+    properties.setProperty("OPENAI_API_KEY", apiKey);
+    return "✅ Remove this cell";
 }
+
 ```
