@@ -8,7 +8,7 @@ This is a simple formula that allows you to use OpenAI's ChatGPT API in Google S
 
 Here's a quick demo of how to use the formula:
 
-![video](./assets/video.mp4)
+https://github.com/urvana/appscript-chatgpt/assets/7570744/9293848a-803f-4d8d-8c0f-f98276f48d19
 
 1. Open your Google Sheet.
 2. Go to `Extensions` -> `Apps Script`.
