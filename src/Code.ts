@@ -19,7 +19,9 @@ const SYSTEM_PROMPT = `
 
 /** Value for empty results */
 const EMPTY = "EMPTY" as const;
-
+/** Optional: hardcode your API key here. */
+const OPENAI_API_KEY = "";
+/** Private user properties storage keys. This is not the API Key itself. */
 const PROPERTY_KEY_OPENAPI = "OPENAI_API_KEY" as const;
 const MIME_JSON = "application/json" as const;
 
@@ -38,7 +40,7 @@ function CHATGPT(
   maxTokens = 150,
 ): string {
   const properties = PropertiesService.getUserProperties();
-  const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI);
+  const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI) || OPENAI_API_KEY;
   if (!apiKey) {
     throw new Error(
       'Use =CHATGPTKEY("YOUR_API_KEY") first. Get it from https://platform.openai.com/api-keys',

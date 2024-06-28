@@ -54,6 +54,9 @@ const SYSTEM_PROMPT = `
 `;
 /** Value for empty results */
 const EMPTY = "EMPTY";
+/** Optional: hardcode your API key here. */
+const OPENAI_API_KEY = "";
+/** Private user properties storage keys. This is not the API Key itself. */
 const PROPERTY_KEY_OPENAPI = "OPENAI_API_KEY";
 const MIME_JSON = "application/json";
 /**
@@ -67,7 +70,7 @@ const MIME_JSON = "application/json";
  */
 function CHATGPT(prompt, model = "gpt-3.5-turbo", maxTokens = 150) {
     const properties = PropertiesService.getUserProperties();
-    const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI);
+    const apiKey = properties.getProperty(PROPERTY_KEY_OPENAPI) || OPENAI_API_KEY;
     if (!apiKey) {
         throw new Error('Use =CHATGPTKEY("YOUR_API_KEY") first. Get it from https://platform.openai.com/api-keys');
     }
