@@ -1,0 +1,17 @@
+{
+  "name": "@fraccional/appscript-chatgpt",
+  "version": "1.0.0",
+  "author": "Patricio Lopez J. <lopezjuripatricio@gmail.com>",
+  "description": "=CHATGPT() formula for Google Spreadsheets.",
+  "main": "dist/Code.js",
+  "scripts": {
+    "build": "tsc"
+  },
+  "license": "MIT",
+  "devDependencies": {
+    "@biomejs/biome": "1.8.3",
+    "@google/clasp": "^2.4.2",
+    "@types/google-apps-script": "^1.0.83",
+    "typescript": "^5.5.2"
+  }
+}
