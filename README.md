@@ -1,6 +1,8 @@
 # =CHATGPT() formula for Google Spreadsheet
 
-This is a simple formula that allows you to use OpenAI's ChatGPT API in Google Sheets. It's a simple way to generate text using GPT-3 directly in your Google Sheets.
+This is a simple formula that allows you to use OpenAI's ChatGPT API in Google Sheets. It's a simple way to generate text using GPT directly in your Google Sheets.
+
+It support any model available in OpenAI's API, including GPT-3.5-turbo and **GPT-4o**.
 
 ![demo](./assets/demo1.png)
 
@@ -142,3 +144,14 @@ function CHATGPTKEY(apiKey) {
 }
 
 ```
+
+### Contributing
+
+Feel free to contribute to this project. If you have any suggestions or improvements, please open an issue or a pull request.
+
+#### Local setup
+
+1. Clone the repository.
+2. Install the dependencies with `pnpm install`.
+3. Run `pnpm build` to compile the code.
+4. Copy the content of `dist/Code.js` into your Google AppsScript editor.
