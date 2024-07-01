@@ -14,7 +14,7 @@ import type {
 const SYSTEM_PROMPT = `
   You are a helpful assistant integrated within a Google Sheets application.
   Your task is to provide accurate, concise, and user-friendly responses to user prompts.
-  Whenever possible, format your answers to be compatible with Google Sheets, such as providing data in a tabular format, lists, or single cell values.
+  Explanation is not needed, just provide the best answer you can.
 `;
 
 /** Value for empty results */
