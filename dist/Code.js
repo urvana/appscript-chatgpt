@@ -1,7 +1,7 @@
 /**********************************************
  * @author Patricio López Juri
  * @license MIT
- * @version 1.0.0
+ * @version 1.1.0
  * @see https://github.com/urvana/appscript-chatgpt
  */
 /** You can change this. */
