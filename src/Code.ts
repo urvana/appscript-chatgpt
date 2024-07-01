@@ -72,9 +72,9 @@ function REQUEST(
   const json = response.getContentText();
   const data = JSON.parse(json) as ChatCompletion;
 
-  const choice = data.choices[0];
+  const choice = data["choices"][0];
   if (choice) {
-    const content = choice.message.content;
+    const content = choice["message"]["content"];
     return (content || "").trim() || EMPTY;
   }
   return EMPTY;

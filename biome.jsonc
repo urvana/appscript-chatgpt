@@ -1,5 +1,14 @@
 {
   "$schema": "https://biomejs.dev/schemas/1.8.3/schema.json",
+  "files": {
+    "include": [
+      "src/",
+      "package.json",
+      ".clasp.json",
+      "biome.jsonc",
+      "tsconfig.json"
+    ]
+  },
   "organizeImports": {
     "enabled": true
   },
@@ -11,7 +20,10 @@
   "linter": {
     "enabled": true,
     "rules": {
-      "recommended": true
+      "recommended": true,
+      "complexity": {
+        "useLiteralKeys": "off"
+      }
     }
   }
 }
