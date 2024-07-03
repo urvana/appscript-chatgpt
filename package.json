@@ -13,7 +13,7 @@
     "@biomejs/biome": "1.8.3",
     "@google/clasp": "^2.4.2",
     "@types/google-apps-script": "^1.0.83",
-    "openai": "^4.52.1",
-    "typescript": "^5.5.2"
+    "openai": "^4.52.3",
+    "typescript": "^5.5.3"
   }
 }
