@@ -1,10 +1,11 @@
 /**********************************************
  * @author Patricio López Juri <https://www.linkedin.com/in/lopezjuri/>
  * @license MIT
- * @version 1.2.0
+ * @version 1.2.1
  * @see {@link https://github.com/urvana/appscript-chatgpt}
  */
 
+import type { ChatModel } from "openai/resources/chat/chat";
 import type {
   ChatCompletion,
   ChatCompletionCreateParamsNonStreaming,
@@ -44,9 +45,9 @@ function REQUEST_COMPLETIONS(
   apiKey: string,
   promptSystem: string,
   prompt: string,
-  model = "gpt-3.5-turbo",
-  maxTokens = DEFAULT_MAX_TOKENS,
-  temperature = DEFAULT_TEMPERATURE,
+  model: ChatModel,
+  maxTokens: number,
+  temperature: number,
 ) {
   // Prepare user prompt
   const promptCleaned = STRING_CLEAN(prompt);
@@ -136,7 +137,7 @@ function REQUEST_COMPLETIONS(
  */
 function CHATGPT(
   prompt: SpreadsheetInput<string>,
-  model = "gpt-3.5-turbo",
+  model: ChatModel = "gpt-4o-mini",
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ): SpreadsheetInput<string> {
@@ -199,7 +200,7 @@ function CHATGPT4(
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ): SpreadsheetInput<string> {
-  return CHATGPT(prompt, "gpt-4", maxTokens, temperature);
+  return CHATGPT(prompt, "gpt-4o", maxTokens, temperature);
 }
 
 /**

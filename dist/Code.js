@@ -1,7 +1,7 @@
 /**********************************************
  * @author Patricio López Juri <https://www.linkedin.com/in/lopezjuri/>
  * @license MIT
- * @version 1.2.0
+ * @version 1.2.1
  * @see {@link https://github.com/urvana/appscript-chatgpt}
  */
 /** You can change this. */
@@ -33,9 +33,9 @@ function REQUEST_COMPLETIONS(
   apiKey,
   promptSystem,
   prompt,
-  model = "gpt-3.5-turbo",
-  maxTokens = DEFAULT_MAX_TOKENS,
-  temperature = DEFAULT_TEMPERATURE,
+  model,
+  maxTokens,
+  temperature,
 ) {
   // Prepare user prompt
   const promptCleaned = STRING_CLEAN(prompt);
@@ -116,7 +116,7 @@ function REQUEST_COMPLETIONS(
  */
 function CHATGPT(
   prompt,
-  model = "gpt-3.5-turbo",
+  model = "gpt-4o-mini",
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ) {
@@ -176,7 +176,7 @@ function CHATGPT4(
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ) {
-  return CHATGPT(prompt, "gpt-4", maxTokens, temperature);
+  return CHATGPT(prompt, "gpt-4o", maxTokens, temperature);
 }
 /**
  * Custom function to set the OpenAI API key. Get yours at: https://platform.openai.com/api-keys

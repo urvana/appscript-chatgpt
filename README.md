@@ -36,11 +36,11 @@ To compose a complex prompts concatenating multiple cells, you can use the `&` o
 
 * `=CHATGPTKEY("YOUR_API_KEY")`: Set your API key.
     * To reset the API key, use an empty string: `=CHATGPTKEY("")`.
-* `=CHATGPT("prompt")`: Generate text based on the prompt, defaulting to **GPT-3.5-turbo**.
+* `=CHATGPT("prompt")`: Generate text based on the prompt, defaulting to **gpt-4o-mini**.
     * Has two optional parameters: `model=gpt-3.5-turbo` and `max_tokens=150`.
-* `=CHATGPT4("prompt")`: Generate text based on the prompt using **GPT-4o**.
+* `=CHATGPT4("prompt")`: Generate text based on the prompt using **gpt-4o**.
     * Has one optional parameter: `max_tokens=150`.
-* `=CHATGPT3("prompt")`: Generate text based on the prompt using **GPT-3.5-turbo**.
+* `=CHATGPT3("prompt")`: Generate text based on the prompt using **gpt-3.5-turbo**.
     * Has one optional parameter: `max_tokens=150`.
 * `=CHATGPTMODELS()`: List available models.
 
@@ -52,7 +52,7 @@ Copy and paste the following code into the script editor:
 /**********************************************
  * @author Patricio López Juri <https://www.linkedin.com/in/lopezjuri/>
  * @license MIT
- * @version 1.2.0
+ * @version 1.2.1
  * @see {@link https://github.com/urvana/appscript-chatgpt}
  */
 /** You can change this. */
@@ -84,9 +84,9 @@ function REQUEST_COMPLETIONS(
   apiKey,
   promptSystem,
   prompt,
-  model = "gpt-3.5-turbo",
-  maxTokens = DEFAULT_MAX_TOKENS,
-  temperature = DEFAULT_TEMPERATURE,
+  model,
+  maxTokens,
+  temperature,
 ) {
   // Prepare user prompt
   const promptCleaned = STRING_CLEAN(prompt);
@@ -167,7 +167,7 @@ function REQUEST_COMPLETIONS(
  */
 function CHATGPT(
   prompt,
-  model = "gpt-3.5-turbo",
+  model = "gpt-4o-mini",
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ) {
@@ -227,7 +227,7 @@ function CHATGPT4(
   maxTokens = DEFAULT_MAX_TOKENS,
   temperature = DEFAULT_TEMPERATURE,
 ) {
-  return CHATGPT(prompt, "gpt-4", maxTokens, temperature);
+  return CHATGPT(prompt, "gpt-4o", maxTokens, temperature);
 }
 /**
  * Custom function to set the OpenAI API key. Get yours at: https://platform.openai.com/api-keys
@@ -337,7 +337,6 @@ function GET_CACHE() {
     CacheService.getUserCache()
   );
 }
-
 
 ```
 
