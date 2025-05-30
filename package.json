@@ -10,10 +10,10 @@
   },
   "license": "MIT",
   "devDependencies": {
-    "@biomejs/biome": "1.8.3",
-    "@google/clasp": "^2.4.2",
-    "@types/google-apps-script": "^1.0.83",
-    "openai": "^4.56.0",
-    "typescript": "^5.5.4"
+    "@biomejs/biome": "1.9.4",
+    "@google/clasp": "3.0.5-alpha",
+    "@types/google-apps-script": "^1.0.97",
+    "openai": "^5.0.1",
+    "typescript": "^5.8.3"
   }
 }
